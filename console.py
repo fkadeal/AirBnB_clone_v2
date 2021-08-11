@@ -112,16 +112,40 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
+    
+    def parse_commands(self, args):
+        """parses commands and returns a dictionary"""
+        result = {}
+        for arg in args:
+            key, value = arg.split("=")
+            if value.startswith("\"") and value.endswith("\""):
+                result[key] = value[1: -1].replace("_", " ")
+            elif value.isdigit():
+                result[key] = int(value)
+            elif "." in value:
+                try:
+                    result[key] = float(value)
+                except ValueError:
+                    continue   
+        return result
 
     def do_create(self, args):
         """ Create an object of any class"""
+        args = args.split(" ")
+        class_name = args[0]
+        kwargs = self.parse_commands(args[1:])
+
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif class_name not in HBNBCommand.classes:
+            print("\n" + class_name + "\n")
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        new_instance = HBNBCommand.classes[class_name]()
+        for key, value in kwargs.items():
+            setattr(new_instance, key, value)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -202,7 +226,9 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
+            print("\nhere " + args)
             args = args.split(' ')[0]  # remove possible trailing args
+            print("\nhere " + args)
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
@@ -319,6 +345,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
