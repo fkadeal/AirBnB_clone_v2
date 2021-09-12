@@ -6,6 +6,8 @@ Routes:
     /: Displays 'Hello HBNB!'
 """
 from flask import Flask
+from flask import abort
+
 
 app = Flask(__name__)
 
