@@ -1,1 +1,1 @@
-creating templete for displaying a HTML
+making condition reqiest get html respose 
