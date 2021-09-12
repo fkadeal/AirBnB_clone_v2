@@ -38,7 +38,7 @@ def param_python(text):
 @app.route("/number/<int:n>", strict_slashes=False)
 def param_number(n):
     """ Displays 'value of text' """
-    return str(n) + " is number"
+    return "{} is number".format(n)
 
 
 if __name__ == "__main__":
