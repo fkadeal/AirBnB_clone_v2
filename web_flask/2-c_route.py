@@ -25,7 +25,7 @@ def hbnb():
 @app.route("/c/<text>", strict_slashes=False)
 def param_c(text):
     """ Displays 'value of text' """
-    return "C "+ text.replace("_", " ")
+    return "C " + text.replace("_", " ")
 
 
 if __name__ == "__main__":
